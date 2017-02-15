@@ -7,12 +7,12 @@ import enumeratum._
 
     object PluralKey extends Enum[PluralKey] {
      val values = findValues
-     case object zero extends PluralKey
-     case object one  extends PluralKey
-     case object two  extends PluralKey
-     case object few  extends PluralKey
-     case object many extends PluralKey
-     case object other extends PluralKey
+     case object Zero extends PluralKey
+     case object One  extends PluralKey
+     case object Two  extends PluralKey
+     case object Few  extends PluralKey
+     case object Many extends PluralKey
+     case object Other extends PluralKey
    }
 
    abstract class Resource(name : String)

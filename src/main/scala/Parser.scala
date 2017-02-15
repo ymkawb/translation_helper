@@ -16,19 +16,23 @@ object Parser {
 		}
 		val root = XML.load(in);
 		val result : ListBuffer[Resource] = ListBuffer()
-		result ++=  (for( e <- root \ "string" ) yield {
-			StringResource((e \ "@name").text,e.text)
-		})
-		result ++= (for( e <- root \ "plurals" ) yield {
-			readPlural(e)
-		})
-
+		result ++= (for( e <- root \ "string" ) yield StringResource((e \ "@name").text,e.text))
+		result ++= (for( e <- root \ "plurals" ) yield 	readPlural(e))
+		result ++= (for( e <- root \ "string-array") yield readArray(e))
 		result.toList
 	}
 
 	def readPlural(n:Node) : Plurals = {		
-		val key = (n \ "@name").text
-		logger.debug(s"key=${key}")
-		Plurals(key,Map())
+		val tupleList = for( e <- n \ "item") yield  (PluralKey.withNameInsensitive((e \ "@quantity").text),e.text)
+		Plurals((n \ "@name").text,tupleList.toMap)
 	} 
+
+	def readArray(n:Node) : StringArray =  {
+		val name = (n \ "@name" ).text
+		val array : Array[String] = (for ( e <- n \ "item" ) yield {
+				e.text
+			}).toArray
+		StringArray(name,array)
+	}
+	
 }
