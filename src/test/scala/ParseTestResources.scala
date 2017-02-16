@@ -2,8 +2,12 @@ package com.github.ymkawb.translation_helper
 
 import org.scalatest._;
 import com.github.ymkawb.translation_helper.model._;
+import com.typesafe.scalalogging._;
+
 
 class ParserSpec extends FlatSpec with Matchers{
+
+	val logger = Logger("ParserSpec")
 
 	info("Parser should be able to parse all variants of Android string resources")
 

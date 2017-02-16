@@ -10,16 +10,18 @@ object Parser {
 
 	val logger = Logger("Resource model parser")
 
+	private val parseMap = Map(
+		"string"	-> ((x : Node) =>  StringResource((x \ "@name").text,x.text)),
+		"plurals"	-> ((x : Node) => readPlural(x)),
+		"string-array" -> ((x : Node) => readArray(x))
+		)
+
 	def readModel(in : InputStream) : List[Resource] = {
 		if( in == null ){
 			return Nil
 		}
 		val root = XML.load(in);
-		val result : ListBuffer[Resource] = ListBuffer()
-		result ++= (for( e <- root \ "string" ) yield StringResource((e \ "@name").text,e.text))
-		result ++= (for( e <- root \ "plurals" ) yield 	readPlural(e))
-		result ++= (for( e <- root \ "string-array") yield readArray(e))
-		result.toList
+		(for( (k,v) <- parseMap) yield  ((root \ k ) map v)).toList.flatten				
 	}
 
 	def readPlural(n:Node) : Plurals = {		
@@ -29,9 +31,7 @@ object Parser {
 
 	def readArray(n:Node) : StringArray =  {
 		val name = (n \ "@name" ).text
-		val array : Array[String] = (for ( e <- n \ "item" ) yield {
-				e.text
-			}).toArray
+		val array : Array[String] = (for ( e <- n \ "item" ) yield {e.text}).toArray
 		StringArray(name,array)
 	}
 	
