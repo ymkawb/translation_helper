@@ -11,4 +11,10 @@ class DiffCalcSpec extends FlatSpec with Matchers{
 	"Diff of empty lists " should " return empty list " in {
 	  (calcDiff(List(),List())) shouldBe 'empty
 	}
+
+	"Diff of non-empty list and empty" should " result in removal  of all elements" in {
+		val l = List(StringResource("a","b"))
+		val diff = calcDiff(l,List())
+		diff.removed should have size 1
+	}
 }

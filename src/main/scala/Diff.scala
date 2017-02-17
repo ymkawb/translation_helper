@@ -5,11 +5,11 @@ class Diff(val added : List[StringResource],val removed : List[StringResource],v
 }
 
 object Diff {
+	
+	def apply() = new Diff(List(),List(),List())
+
 	def calcDiff(base : List[StringResource], income : List[StringResource]) : Diff = {
 		if(base.isEmpty && income.isEmpty) new Diff(Nil,Nil,Nil)
-		else {
-			base map (_,_)
-		}
-		
+		else Diff()
 	}
 }
