@@ -14,11 +14,12 @@ import enumeratum._
       case object Other extends PluralKey
     }
 
-    abstract class Resource(name : String)
+    abstract class Resource(val name : String){}
+
 
     /*
     
     */
-    case class StringResource(name: String, value:String) extends Resource(name)    
-    case class StringArray(name: String, items: Array[String]) extends Resource(name)
-    case class Plurals(name: String, values: Map[PluralKey,String]) extends Resource(name)
+    case class StringResource(name_ : String,val value:String) extends Resource(name_)    
+    case class StringArray(name_ : String,val items: Array[String]) extends Resource(name_)
+    case class Plurals(name_ : String,val values: Map[PluralKey,String]) extends Resource(name_)

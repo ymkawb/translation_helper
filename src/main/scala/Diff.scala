@@ -1,21 +1,25 @@
 package com.github.ymkawb.translation_helper.model
+import scala.collection.mutable.ListBuffer
 
-class Diff(val added : List[StringResource],val removed : List[StringResource],val changed : List[StringResource]) {
+class Diff(val added : List[Resource],val removed : List[Resource],val changed : List[Pair[Resource,Resource]]) {
 	lazy val isEmpty = added.isEmpty && removed.isEmpty && changed.isEmpty
 }
 
 object Diff {
-	
-	def apply() = new Diff(Nil,Nil,Nil)
+	def calcDiff(base : List[Resource], income : List[Resource]) : Diff = {				
+		val mappedBase = (base map (x => (x.name,x))).toMap
+		var mappedIncome = (income map (x => (x.name,x))).toMap
+		val removed : ListBuffer[Resource] = ListBuffer()
+		val changed : ListBuffer[Pair[Resource,Resource]] = ListBuffer()
+		for( (k,v) <- mappedBase ) {
+			mappedIncome get k match {
+				case Some(x) if x != v => changed += Pair(v,x) 
+				case None => removed +=  v 
+				case _ => {}
+			}	
+			mappedIncome = mappedIncome - k 
+		}
+		new Diff(mappedIncome.values.toList,removed.toList,changed.toList)
 
-	def calcDiff(base : List[StringResource], income : List[StringResource]) : Diff = {
-		if(base.isEmpty){
-			if (income.isEmpty) Diff() else new Diff(income,Nil,Nil)
-		}else if(income.isEmpty){
-			new Diff(Nil,base,Nil)
-		}
-		else {
-			Diff()
-		}
 	}
 }
