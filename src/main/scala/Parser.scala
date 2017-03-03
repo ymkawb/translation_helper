@@ -21,7 +21,7 @@ object Parser {
 			return Nil
 		}
 		val root = XML.load(in);
-		(for( (k,v) <- parseMap) yield  ((root \ k ) map v)).toList.flatten				
+		(parseMap.map {case (k,v) => ((root \ k) map v)}).toList.flatten
 	}
 
 	def readPlural(n:Node) : Plurals = {		
