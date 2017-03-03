@@ -25,14 +25,14 @@ class ResourceQualifierSpec extends FlatSpec with Matchers with LazyLogging{
 	}
 
 
-	"Resource quilifier parser" should " parse local values and save hole value  " in {
-		import ResourceQualifier.QualifierParser._
-		parse(locale,"en-rUS") match {			
-			case Success(_,_) => {}
-			case x => {
-				logger.error(x.toString)
-				fail(s"Result = ${x.getClass}")
-			}
-		}	
-	}
+	// "Resource quilifier parser" should " parse local values and save hole value  " in {
+	// 	import ResourceQualifier.QualifierParser._
+	// 	parse(locale,"en-rUS") match {			
+	// 		case Success(_,_) => {}
+	// 		case x => {
+	// 			logger.error(x.toString)
+	// 			fail(s"Result = ${x.getClass}")
+	// 		}
+	// 	}	
+	// }
 }
