@@ -27,7 +27,7 @@ class DiffCalcSpec extends FlatSpec with Matchers{
 		diff.removed should have size 0
 	}
 
-	"Diff of resource with same key and differnt value" should " result in chaanged diff"  in {
+	"Diff of resource with same key and differnt value" should " result in changed diff"  in {
 		val s1 = StringResource("key","value")
 		val s2 = StringResource("key","value1")
 		val diff = calcDiff(List(s1),List(s2));
