@@ -20,6 +20,5 @@ object Diff {
 			mappedIncome = mappedIncome - k 
 		}
 		new Diff(mappedIncome.values.toList,removed.toList,changed.toList)
-
 	}
 }
