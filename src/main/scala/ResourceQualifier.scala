@@ -60,7 +60,7 @@
  			case x => MCC_MNC(x,None)
  			}
  		}
-		def locale : Parser[Token] = "\\w\\w(-r\\w\\w)?" ^^ {LOCALE(_)}}
+		def locale : Parser[Token] = "\\w\\w(-r\\w\\w)?".r ^^ {LOCALE(_)}}
 
  		def apply(input:String) = ???
 

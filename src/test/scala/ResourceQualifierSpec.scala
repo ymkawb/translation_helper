@@ -6,7 +6,7 @@ import com.typesafe.scalalogging._;
 
 class ResourceQualifierSpec extends FlatSpec with Matchers with LazyLogging{
 	info("""Resource quilifier should be able to parse and build all supported android resource quilifiers.
-	See https://developer.android.com/guide/topics/resources/providing-resources.html table 2""")
+		See https://developer.android.com/guide/topics/resources/providing-resources.html table 2""")
 
 	"Resource quilifier parser" should " parse mcc-mnc scheme with both values " in {
 		import ResourceQualifier.QualifierParser._
@@ -25,14 +25,17 @@ class ResourceQualifierSpec extends FlatSpec with Matchers with LazyLogging{
 	}
 
 
-	// "Resource quilifier parser" should " parse local values and save hole value  " in {
-	// 	import ResourceQualifier.QualifierParser._
-	// 	parse(locale,"en-rUS") match {			
-	// 		case Success(_,_) => {}
-	// 		case x => {
-	// 			logger.error(x.toString)
-	// 			fail(s"Result = ${x.getClass}")
-	// 		}
-	// 	}	
-	// }
+	"Resource quilifier parser" should " parse local values and save whole value  " in {
+		import ResourceQualifier.QualifierParser._
+		parse(locale,"en-rUS") match {			
+			case Success(x,_) => x match {
+				case LOCALE("en-rUS") => {}
+				case _ => fail(s"unexpexted : ${x}")
+			}
+			case x => {
+				logger.error(x.toString)
+				fail(s"Result = ${x.getClass}")
+			}
+		}	
+	}
 }
