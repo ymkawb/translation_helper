@@ -3,8 +3,7 @@
 
  //See https://developer.android.com/guide/topics/resources/providing-resources.html Table 2 for up-to-date list of variation
  case class ResourceQualifier(
- 	val mcc : Option[String] = None,
- 	val mnc : Option[String] = None,
+ 	val mcc_mnc : Option[String] = None,
  	val locale : Option[String] = None, // TODO: 
  	val layoutDirection : Option[String] = None,
  	val smallestWidth : Option[String] = None,
@@ -31,28 +30,33 @@
  		case class SEPARATOR() extends Token
  		case class MCC_MNC(mcc:String,mnc:Option[String] = None) extends Token
  		case class LOCALE(value:String) extends Token
- 		case class layoutDirection(str:String) extends Token
- 		case class smallestWidth(str:String) extends Token
- 		case class avalibleWidth(str:String) extends Token
- 		case class screenSize(str:String) extends Token
- 		case class roundScreen(str:String) extends Token 
- 		case class screenAspect(str:String) extends Token
- 		case class screenOrientation(str:String) extends Token
- 		case class uiMode(str:String) extends Token
- 		case class nightMode(str:String) extends Token
- 		case class dpi(str:String) extends Token
- 		case class tst(str:String) extends Token
- 		case class ka(str:String) extends Token
- 		case class pti(str:String) extends Token
- 		case class pnt(str:String) extends Token
- 		case class platformVersion(str:String) extends Token
+ 		case class LAYOUTDIRECTION(str:String) extends Token
+ 		case class SMALLESTWIDTH(str:String) extends Token
+ 		case class AVALIBLEWIDTH(str:String) extends Token
+ 		case class SCREENSIZE(str:String) extends Token
+ 		case class ROUNDSCREEN(str:String) extends Token 
+ 		case class SCREENASPECT(str:String) extends Token
+ 		case class SCREENORIENTATION(str:String) extends Token
+ 		case class UIMODE(str:String) extends Token
+ 		case class NIGHTMODE(str:String) extends Token
+ 		case class DPI(str:String) extends Token
+ 		case class TST(str:String) extends Token
+ 		case class KA(str:String) extends Token
+ 		case class PTI(str:String) extends Token
+ 		case class PNT(str:String) extends Token
+ 		case class PLATFORMVERSION(str:String) extends Token
+
+ 		implicit def tokenToOptionString(t:Option[Token]) : Option[String] = t match {
+ 			case None => None
+ 			case Some(x) => Some("SOME")
+ 		}
 
  		// private val MCC_MNC_RE = """(mcc-\d+)(-mnc\d+)?""".r;
 
- 		private val MCC_MNC_RE = "(mcc\\d+)(-mnc10)?".r;
+ 		private val MCC_MNC_RE = "(mcc\\d+)(-mnc\\d+)?".r;
 
 
- 		def separator : Parser[SEPARATOR] = "-".r ^^ {_ => SEPARATOR()}
+ 		def separator : Parser[Token] = "-".r ^^ {_ => SEPARATOR()}
 
  		def mcc_mnc : Parser[Token] = MCC_MNC_RE  ^^ { _ match {
  			case MCC_MNC_RE(mcc,null) => MCC_MNC(mcc,None)
@@ -60,7 +64,22 @@
  			case x => MCC_MNC(x,None)
  			}
  		}
-		def locale : Parser[Token] = "\\w\\w(-r\\w\\w)?".r ^^ {LOCALE(_)}}
+		def locale : Parser[Token] = "\\w\\w(-r\\w\\w)?".r ^^ {LOCALE(_)}
+
+		def layoutDirection : Parser[Token] = "(ldrtl)|(ldltr)".r ^^ {LAYOUTDIRECTION(_)}
+
+		def smallestWidth : Parser[Token] = "sw\\d+dp".r ^^ {SMALLESTWIDTH(_)} // Use groups for extrating actual value for dp
+
+		def avalibleWidth  : Parser[Token] = "w\\d+dp".r ^^ {AVALIBLEWIDTH(_)}
+
+		def quilifier : Parser[ResourceQualifier] = mcc_mnc.? ~ separator.? ~> locale.? ^^ { case mcc_mnc ~ locale  => {new ResourceQualifier(
+			mcc_mnc = mcc_mnc,
+			locale = locale
+			)} }
+
+	}
+
+	
 
  		def apply(input:String) = ???
 

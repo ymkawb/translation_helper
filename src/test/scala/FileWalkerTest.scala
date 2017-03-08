@@ -12,7 +12,7 @@ class FileWalkerSpec extends FlatSpec with Matchers with LazyLogging {
 		val name = """values(-(.+))?""".r	
 		"values-it" match {
 			case name(null,_) => {}
-			case name(_,spec) => {logger.info(s"Spec=${spec}")}
+			case name(_,spec) => {}
 			case _ => {}
 		}
 	}

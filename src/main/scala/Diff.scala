@@ -15,7 +15,6 @@ object Diff {
 			mappedIncome get k match {
 				case Some(x) if x != v => changed += Pair(v,x) 
 				case None => removed +=  v 
-				case _ => {}
 			}	
 			mappedIncome = mappedIncome - k 
 		}
