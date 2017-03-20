@@ -9,52 +9,5 @@ class ResourceQualifierSpec extends FlatSpec with Matchers with LazyLogging{
 	info("""Resource quilifier should be able to parse and build all supported android resource quilifiers.
 		See https://developer.android.com/guide/topics/resources/providing-resources.html table 2""")
 
-	import ResourceQualifier.QualifierParser._
 
-	"Resource quilifier parser" should " parse mcc-mnc scheme with both values " in {
-		import ResourceQualifier.QualifierParser._
-		parse(mcc_mnc,"mcc10-mnc1440") match {			
-			case Success(_,_) => {}
-			case x => fail(s"Result = ${x.getClass}")
-		}	
-	}
-
-	"Resource quilifier parser" should " parse mcc-mnc scheme with mcc only " in {
-		import ResourceQualifier.QualifierParser._
-		parse(mcc_mnc,"mcc10") match {			
-			case Success(_,_) => {}
-			case x => fail(s"Result = ${x.getClass}")
-		}	
-	}
-
-
-	"Resource quilifier parser" should " parse local values and save whole value  " in {
-		import ResourceQualifier.QualifierParser._
-		parse(locale,"en-rUS") match {			
-			case Success(x,_) => x match {
-				case LOCALE("en-rUS") => {}
-				case _ => fail(s"unexpexted : ${x}")
-			}
-			case x => {				
-				fail(s"Result = ${x.getClass}")
-			}
-		}	
-	}
-
-	"Parser" should "parse layout direftion" in {
-		parse(layoutDirection,"ldltr") match  {
-			case Success(x,_) => x match {
-				case LAYOUTDIRECTION(_) => {}
-				case _ => fail(s"unexpexted:${x}")
-			}
-			case x => fail(s"unexpexted:${x}")
-			
-		}
-	}
-	"Parser" should "parse smallest width" in {
-		parse(smallestWidth,"sw720dp") match {
-			case Success(x,_) => {}
-			case x => fail(s"${x}")
-		}
-	}
 }
