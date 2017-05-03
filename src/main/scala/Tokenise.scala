@@ -55,10 +55,33 @@ object Tokenizer extends LazyLogging{
 		singleTokenMatch(rq,l,"""(port)|(land)""".r,(x:ResourceQualifier, y:String) => x.copy(screenOrientation = Some(y)))
 
 	def uiMode(rq: ResourceQualifier, l : List[String]) = 
-		singleTokenMatch(rq,l,"""(car)(desk)(television)(appliance)(watch)""".r,(x:ResourceQualifier, y:String) => x.copy(uiMode = Some(y)))
+		singleTokenMatch(rq,l,"""(car)|(desk)|(television)|(appliance)|(watch)""".r,(x:ResourceQualifier, y:String) => x.copy(uiMode = Some(y)))
 
 	def nightMode(rq: ResourceQualifier, l : List[String]) = 
 		singleTokenMatch(rq,l,"""(night)|(notnight)""".r,(x:ResourceQualifier, y:String) => x.copy(nightMode = Some(y)))
+
+	def dpi(rq: ResourceQualifier, l : List[String]) = 
+		singleTokenMatch(rq,l,"""(ldpi)|(mdpi)|(hdpi)|(xhdpi)|(xxhdpi)|(xxxhdpi)|(nodpi)|(tvdpi)|(anydpi)""".r,
+			(x:ResourceQualifier,y:String) => x.copy(dpi = Some(y)))
+
+	def touchScreenType(rq: ResourceQualifier, l : List[String]) = 
+		singleTokenMatch(rq,l,"""(notouch)|(finger)""".r, (x:ResourceQualifier,y:String) => x.copy(touchScreenType = Some(y)))
+
+	def keyboardAvailibility(rq: ResourceQualifier, l : List[String]) = 
+		singleTokenMatch(rq,l,
+			"""(keysexposed)|(keyshidden)|(keyssoft	)""".r,(x:ResourceQualifier, y:String) => x.copy(keyboardAvailibility=Some(y)))
+
+	def primaryTextInput(rq: ResourceQualifier, l: List[String]) = 
+		singleTokenMatch(rq,l,"""(nokeys)|(qwerty)|(12key)""".r,(x:ResourceQualifier, y:String) => x.copy(primaryTextInput = Some(y)))
+
+	def primaryNonTouch(rq : ResourceQualifier, l : List[String]) = 
+		singleTokenMatch(rq,l,"""(nonav)|(dpad)|(trackball)|(wheel)""".r,(x:ResourceQualifier, y:String) => x.copy(primaryNonTouch = Some(y)))
+
+	def platformVersion(rq : ResourceQualifier, l : List[String]) = 
+		singleTokenMatch(rq, l, """v\d+""".r,(x:ResourceQualifier, y:String) => x.copy(platformVersion = Some(y)))
+
+
+
 
 
 	def singleTokenMatch(rq: ResourceQualifier,
@@ -83,7 +106,15 @@ object Tokenizer extends LazyLogging{
 		roundScreen,
 		wideColorGamut,
 		hdr,
-		screenOrientation
+		screenOrientation,
+		uiMode,
+		nightMode,
+		dpi,
+		touchScreenType,
+		keyboardAvailibility,
+		primaryTextInput,
+		primaryNonTouch,
+		platformVersion
 		)
 
 	def build(input:String) = {
