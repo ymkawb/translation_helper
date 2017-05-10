@@ -24,12 +24,16 @@ package com.github.ymkawb.translation_helper.model
  	val primaryNonTouch : Option[String] = None,
  	val platformVersion : Option[String] = None)
  {
- 	override def toString = {
+ 	override def toString : String = {
  		import scala.collection.mutable.StringBuilder
  		val sb = new StringBuilder("{")
- 		mcc_mnc.map( x => sb.append(s" mcc_mnc=${x}"))
- 		locale.map(x => sb.append(s" locale=${x}"))
- 		layoutDirection.map(x => sb.append(s" layoutDirection=${x}"))
+ 		for( (k,f) <- ResourceQualifier.toStringList ){
+ 			f(this) match {
+ 				case Some(x) => sb.append(s" ${k} = ${x}")
+ 				case _ => 
+ 			}
+ 			
+ 		}
  		sb.append(" }")
  		sb.toString
  	}
@@ -38,12 +42,36 @@ package com.github.ymkawb.translation_helper.model
 
  object ResourceQualifier { 	
  	import scala.util.matching.Regex
+
  	class RichRegex(underlying: Regex) {
 		def matches(s: String) = underlying.pattern.matcher(s).matches
 	}
 	implicit def regexToRichRegex(r: Regex) = new RichRegex(r)
 
 	type BuildOp = (ResourceQualifier,List[String]) => (ResourceQualifier,List[String])
+
+	val toStringList : List[(String,ResourceQualifier => Option[String])] = List(
+		("mcc_mnc",_.mcc_mnc),
+		("locale", _.locale),
+		("layoutDirection",_.layoutDirection),
+		("smallestWidth", _.smallestWidth),
+		("avalibleWidth", _.avalibleWidth),
+		("avalibleHeight", _.avalibleHeight),
+		("screenSize", _.screenSize),
+		("screenAspect",_.screenAspect),
+		("roundScreen",_.roundScreen),
+		("wideColorGamut",_.wideColorGamut),
+		("hdr",_.hdr),
+		("screenOrientation",_.screenOrientation),
+		("uiMode",_.uiMode),
+		("nightMode",_.nightMode),
+		("dpi",_.dpi),
+		("touchScreenType",_.touchScreenType),
+		("keyboardAvailibility",_.keyboardAvailibility),
+		("primaryTextInput",_.primaryTextInput),
+		("primaryNonTouch",_.primaryNonTouch),
+		("platformVersion",_.platformVersion)
+		)
 	
 	def mcc_mnc(rq:ResourceQualifier, l : List[String]) = l match {
 		case f :: s :: tail if("""mcc\d+""".r.matches(f) && """mnc\d+""".r.matches(s)) => (rq.copy(mcc_mnc=Some(s"${f}-${s}")),tail)

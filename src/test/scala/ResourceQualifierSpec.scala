@@ -22,15 +22,14 @@ class ResourceQualifierSpec extends FlatSpec with Matchers with LazyLogging{
 	"ResourceQualifier " should " parse locale" in {
 		var mcc = "en"
 		var rq = ResourceQualifier(mcc)
-		logger.info(s"rq=${rq}")
-		rq.locale shouldBe Some("en")				
+		rq.locale shouldBe Some("en")		
+		logger.debug(s"${rq}")		
 	}
 
 
 	"ResourceQualifier " should " parse layout direction in order" in {
 		var mcc = "ldrtl"
 		var rq = ResourceQualifier(mcc)
-		logger.info(s"rq=${rq}")
 		rq.layoutDirection shouldBe Some("ldrtl")				
 	}
 
