@@ -22,8 +22,7 @@ class ResourceQualifierSpec extends FlatSpec with Matchers with LazyLogging{
 	"ResourceQualifier " should " parse locale" in {
 		var mcc = "en"
 		var rq = ResourceQualifier(mcc)
-		rq.locale shouldBe Some("en")		
-		logger.debug(s"${rq}")		
+		rq.locale shouldBe Some("en")				
 	}
 
 

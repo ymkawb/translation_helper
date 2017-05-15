@@ -6,4 +6,5 @@
 		<item>text_string3</item>
 		<item>text_string4</item>
 	</string-array>
+	<item name="bitmap_loader_image_id" type="id"/>
 </resources>
