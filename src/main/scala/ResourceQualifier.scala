@@ -178,13 +178,9 @@ import com.typesafe.scalalogging._;
  		platformVersion
  		)
 
- 	def apply(input:String) = {
- 		val tokens = toTokenList(input)
- 		var rq = (new ResourceQualifier(),tokens)
- 		for( bo <- buildList ){
- 			rq = bo(rq._1,rq._2)
- 		}
- 		rq._1
- 	}
+ 	def apply(input:String) = 
+ 		buildList.
+ 				foldLeft((new ResourceQualifier(),toTokenList(input)))((pair,op) => op(pair._1,pair._2))._1
+ 	
  	def toTokenList(input:String) : List[String] = input.split('-').toList	
  }
