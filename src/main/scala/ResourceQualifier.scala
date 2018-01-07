@@ -178,7 +178,7 @@ import com.typesafe.scalalogging._;
  		platformVersion
  		)
 
- 	def apply(input:String) = 
+ 	def apply(input:String) : ResourceQualifier = 
  		buildList.
  				foldLeft((new ResourceQualifier(),toTokenList(input)))((pair,op) => op(pair._1,pair._2))._1
  	
